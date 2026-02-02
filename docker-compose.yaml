@@ -1,14 +1,15 @@
-# python実行
-
 services:
   python3:
     restart: always
     build: .
     container_name: 'python3'
-    working_dir: '/root/'
-    tty: true
+    # 修正: ホストの5000番をコンテナの5000番に接続
+    ports:
+      - "5000:5000"
+    # 修正: 作業ディレクトリを /app に合わせる
+    working_dir: /app
     volumes:
-      - ./opt:/root/opt
-
-
-# yt-dlpを追加
+      - .:/app
+    # 追加: コンテナ起動時にFlaskを起動する
+    command: python3 app.py
+    tty: true
